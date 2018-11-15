@@ -14,7 +14,7 @@ export default class Shaders{
     loadShaders(){
         // Initialize a shader program; this is where all the lighting
         // for the vertices and so forth is established.
-        const shaderProgram = this.initShaderProgram(this.gl, vsSource, fsSource);
+        const shaderProgram = this.initShaderProgram(this.gl, this.shaders.vertexShader, this.shaders.fragmentShader);
 
         // Collect all the info needed to use the shader program.
         // Look up which attributes our shader program is using
@@ -39,8 +39,8 @@ export default class Shaders{
     }
 
     initShaderProgram(gl, vsSource, fsSource) {
-        const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-        const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+        const vertexShader = this.loadShader(this.gl.VERTEX_SHADER, vsSource);
+        const fragmentShader = this.loadShader(this.gl.FRAGMENT_SHADER, fsSource);
       
         // Create the shader program
       
@@ -58,5 +58,27 @@ export default class Shaders{
       
         return shaderProgram;
     }
+
+    loadShader(type, source) {
+        const shader = this.gl.createShader(type);
+      
+        // Send the source to the shader object
+      
+        this.gl.shaderSource(shader, source);
+      
+        // Compile the shader program
+      
+        this.gl.compileShader(shader);
+      
+        // See if it compiled successfully
+      
+        if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
+          alert('An error occurred compiling the shaders: ' + this.gl.getShaderInfoLog(shader));
+          this.gl.deleteShader(shader);
+          return null;
+        }
+      
+        return shader;
+      }
 
 }

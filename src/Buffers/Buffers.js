@@ -3,7 +3,7 @@ export default class Buffers{
         
     }
 
-    static initBuffers(gl) {
+    initBuffers(gl) {
 
         // Create a buffer for the cube's vertex positions.
       
