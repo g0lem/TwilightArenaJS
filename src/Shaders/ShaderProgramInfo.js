@@ -1,5 +1,5 @@
 import ShaderProgram from "./structures/ShaderProgram";
-import gl from "./../gl";
+import gl from "../Graphics/gl";
 
 export default class ShaderProgramInfo{
 

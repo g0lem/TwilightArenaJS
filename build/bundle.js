@@ -19,7 +19,6 @@
 
     class Window{
         constructor(){
-            
             this.cubeRotation = 0.0; 
         }
 

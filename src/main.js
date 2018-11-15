@@ -1,8 +1,7 @@
-import Window from "./Window";
+import Window from "./Graphics/Window";
 import Shaders from "./Shaders/Shaders";
-import Texture from "./Texture/Texture";
-import Buffers from "./Buffers/Buffers";
-
+import Texture from "./Graphics/Texture/Texture";
+import Buffers from "./Graphics/Buffers/Buffers";
 
 var window = new Window();
 var shaders = new Shaders();

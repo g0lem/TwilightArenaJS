@@ -2,7 +2,6 @@ import gl from "./gl";
 
 export default class Window{
     constructor(){
-        
         this.cubeRotation = 0.0; 
     }
 
