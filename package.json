@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/g0lem/TwilightArenaJS/issues"
   },
-  "homepage": "https://github.com/g0lem/TwilightArenaJS#readme"
+  "homepage": "https://github.com/g0lem/TwilightArenaJS#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
