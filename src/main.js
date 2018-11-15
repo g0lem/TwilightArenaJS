@@ -1,5 +1,5 @@
 import Window from "./Graphics/Window";
-import Shaders from "./Shaders/Shaders";
+import Shaders from "./Graphics/Shaders/Shaders";
 import Texture from "./Graphics/Texture/Texture";
 import Buffers from "./Graphics/Buffers/Buffers";
 
