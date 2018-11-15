@@ -7,8 +7,6 @@
     var gl = (function(){
         var canvas = document.querySelector('#glcanvas');
         var gl = canvas.getContext('webgl');
-
-        alert("GL");
           
         // If we don't have a GL context, give up now
           
@@ -17,7 +15,6 @@
             return;
         }       
         return gl;
-
     })();
 
     class Window{
@@ -236,7 +233,6 @@
                 vertexShader,
                 fragmentShader,
             };
-            gl$$1 = gl$$1;
         }
 
         loadShaders(){

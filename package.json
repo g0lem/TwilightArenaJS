@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "rollup ./src/main.js --format umd --name \"myBundle\" --file ./build/bundle.js"
+    "bundle": "rollup ./src/main.js --format umd --name \"myBundle\" --file ./build/bundle.js",
+    "bundle-watch": "rollup ./src/main.js --format umd --name \"myBundle\" --file ./build/bundle.js --watch"
   },
   "repository": {
     "type": "git",

@@ -1,8 +1,6 @@
 export default (function(){
     var canvas = document.querySelector('#glcanvas');
     var gl = canvas.getContext('webgl');
-
-    alert("GL");
       
     // If we don't have a GL context, give up now
       
@@ -11,5 +9,4 @@ export default (function(){
         return;
     }       
     return gl;
-
 })();
