@@ -5,14 +5,14 @@ import Buffers from "./Buffers/Buffers";
 
 
 var window = new Window();
-var shaders = new Shaders(window.gl);
+var shaders = new Shaders();
 
 var programInfo = shaders.loadShaders();
 
 var buffers = new Buffers();
-var actualBuffers = buffers.initBuffers(window.gl);
+var actualBuffers = buffers.initBuffers();
 
-var texture = new Texture(window.gl);
+var texture = new Texture();
 
 var actualTexture = texture.initTexture("cubetexture.png");
 

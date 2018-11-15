@@ -4,29 +4,37 @@
     (factory());
 }(this, (function () { 'use strict';
 
+    var gl = (function(){
+        var canvas = document.querySelector('#glcanvas');
+        var gl = canvas.getContext('webgl');
+
+        alert("GL");
+          
+        // If we don't have a GL context, give up now
+          
+        if (!gl) {
+            alert('Unable to initialize WebGL. Your browser or machine may not support it.');
+            return;
+        }       
+        return gl;
+
+    })();
+
     class Window{
         constructor(){
-            this.canvas = document.querySelector('#glcanvas');
-            this.gl = this.canvas.getContext('webgl');
-          
-            // If we don't have a GL context, give up now
-          
-            if (!this.gl) {
-              alert('Unable to initialize WebGL. Your browser or machine may not support it.');
-              return;
-            }       
+            
             this.cubeRotation = 0.0; 
         }
 
         drawScene(programInfo, buffers, texture, deltaTime) {
-            this.gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
-            this.gl.clearDepth(1.0);                 // Clear everything
-            this.gl.enable(this.gl.DEPTH_TEST);           // Enable depth testing
-            this.gl.depthFunc(this.gl.LEQUAL);            // Near things obscure far things
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+            gl.clearDepth(1.0);                 // Clear everything
+            gl.enable(gl.DEPTH_TEST);           // Enable depth testing
+            gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
           
             // Clear the canvas before we start drawing on it.
           
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
           
             // Create a perspective matrix, a special matrix that is
             // used to simulate the distortion of perspective in a camera.
@@ -36,7 +44,7 @@
             // and 100 units away from the camera.
           
             const fieldOfView = 45 * Math.PI / 180;   // in radians
-            const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
+            const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
             const zNear = 0.1;
             const zFar = 100.0;
             const projectionMatrix = mat4.create();
@@ -76,19 +84,19 @@
             // buffer into the vertexPosition attribute
             {
               const numComponents = 3;
-              const type = this.gl.FLOAT;
+              const type = gl.FLOAT;
               const normalize = false;
               const stride = 0;
               const offset = 0;
-              this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffers.position);
-              this.gl.vertexAttribPointer(
+              gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+              gl.vertexAttribPointer(
                   programInfo.attribLocations.vertexPosition,
                   numComponents,
                   type,
                   normalize,
                   stride,
                   offset);
-              this.gl.enableVertexAttribArray(
+              gl.enableVertexAttribArray(
                   programInfo.attribLocations.vertexPosition);
             }
           
@@ -96,19 +104,19 @@
             // the texture coordinate buffer into the textureCoord attribute.
             {
               const numComponents = 2;
-              const type = this.gl.FLOAT;
+              const type = gl.FLOAT;
               const normalize = false;
               const stride = 0;
               const offset = 0;
-              this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffers.textureCoord);
-              this.gl.vertexAttribPointer(
+              gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+              gl.vertexAttribPointer(
                   programInfo.attribLocations.textureCoord,
                   numComponents,
                   type,
                   normalize,
                   stride,
                   offset);
-                this.gl.enableVertexAttribArray(
+                gl.enableVertexAttribArray(
                   programInfo.attribLocations.textureCoord);
             }
           
@@ -116,40 +124,40 @@
             // the normal buffer into the vertexNormal attribute.
             {
               const numComponents = 3;
-              const type = this.gl.FLOAT;
+              const type = gl.FLOAT;
               const normalize = false;
               const stride = 0;
               const offset = 0;
-              this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffers.normal);
-              this.gl.vertexAttribPointer(
+              gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
+              gl.vertexAttribPointer(
                   programInfo.attribLocations.vertexNormal,
                   numComponents,
                   type,
                   normalize,
                   stride,
                   offset);
-                this.gl.enableVertexAttribArray(
+                gl.enableVertexAttribArray(
                   programInfo.attribLocations.vertexNormal);
             }
           
             // Tell WebGL which indices to use to index the vertices
-            this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
           
             // Tell WebGL to use our program when drawing
           
-            this.gl.useProgram(programInfo.program);
+            gl.useProgram(programInfo.program);
           
             // Set the shader uniforms
           
-            this.gl.uniformMatrix4fv(
+            gl.uniformMatrix4fv(
                 programInfo.uniformLocations.projectionMatrix,
                 false,
                 projectionMatrix);
-            this.gl.uniformMatrix4fv(
+            gl.uniformMatrix4fv(
                 programInfo.uniformLocations.modelViewMatrix,
                 false,
                 modelViewMatrix);
-            this.gl.uniformMatrix4fv(
+            gl.uniformMatrix4fv(
                 programInfo.uniformLocations.normalMatrix,
                 false,
                 normalMatrix);
@@ -157,19 +165,19 @@
             // Specify the texture to map onto the faces.
           
             // Tell WebGL we want to affect texture unit 0
-            this.gl.activeTexture(this.gl.TEXTURE0);
+            gl.activeTexture(gl.TEXTURE0);
           
             // Bind the texture to texture unit 0
-            this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+            gl.bindTexture(gl.TEXTURE_2D, texture);
           
             // Tell the shader we bound the texture to texture unit 0
-            this.gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+            gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
           
             {
               const vertexCount = 36;
-              const type = this.gl.UNSIGNED_SHORT;
+              const type = gl.UNSIGNED_SHORT;
               const offset = 0;
-              this.gl.drawElements(this.gl.TRIANGLES, vertexCount, type, offset);
+              gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
             }
           
             // Update the rotation for the next draw
@@ -223,18 +231,18 @@
 
     class Shaders{
 
-        constructor(gl){
+        constructor(gl$$1){
             this.shaders = {
                 vertexShader,
                 fragmentShader,
             };
-            this.gl = gl;
+            gl$$1 = gl$$1;
         }
 
         loadShaders(){
             // Initialize a shader program; this is where all the lighting
             // for the vertices and so forth is established.
-            const shaderProgram = this.initShaderProgram(this.gl, this.shaders.vertexShader, this.shaders.fragmentShader);
+            const shaderProgram = this.initShaderProgram(gl, this.shaders.vertexShader, this.shaders.fragmentShader);
 
             // Collect all the info needed to use the shader program.
             // Look up which attributes our shader program is using
@@ -243,36 +251,36 @@
             const programInfo = {
                 program: shaderProgram,
                 attribLocations: {
-                vertexPosition: this.gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-                vertexNormal: this.gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
-                textureCoord: this.gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
+                vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+                vertexNormal: gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
+                textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
                 },
                 uniformLocations: {
-                projectionMatrix: this.gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-                modelViewMatrix: this.gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-                normalMatrix: this.gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
-                uSampler: this.gl.getUniformLocation(shaderProgram, 'uSampler'),
+                projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+                modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+                normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
+                uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
                 },
             };
 
             return programInfo;
         }
 
-        initShaderProgram(gl, vsSource, fsSource) {
-            const vertexShader$$1 = this.loadShader(this.gl.VERTEX_SHADER, vsSource);
-            const fragmentShader$$1 = this.loadShader(this.gl.FRAGMENT_SHADER, fsSource);
+        initShaderProgram(gl$$1, vsSource, fsSource) {
+            const vertexShader$$1 = this.loadShader(gl$$1.VERTEX_SHADER, vsSource);
+            const fragmentShader$$1 = this.loadShader(gl$$1.FRAGMENT_SHADER, fsSource);
           
             // Create the shader program
           
-            const shaderProgram = gl.createProgram();
-            gl.attachShader(shaderProgram, vertexShader$$1);
-            gl.attachShader(shaderProgram, fragmentShader$$1);
-            gl.linkProgram(shaderProgram);
+            const shaderProgram = gl$$1.createProgram();
+            gl$$1.attachShader(shaderProgram, vertexShader$$1);
+            gl$$1.attachShader(shaderProgram, fragmentShader$$1);
+            gl$$1.linkProgram(shaderProgram);
           
             // If creating the shader program failed, alert
           
-            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-              alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
+            if (!gl$$1.getProgramParameter(shaderProgram, gl$$1.LINK_STATUS)) {
+              alert('Unable to initialize the shader program: ' + gl$$1.getProgramInfoLog(shaderProgram));
               return null;
             }
           
@@ -280,21 +288,21 @@
         }
 
         loadShader(type, source) {
-            const shader = this.gl.createShader(type);
+            const shader = gl.createShader(type);
           
             // Send the source to the shader object
           
-            this.gl.shaderSource(shader, source);
+            gl.shaderSource(shader, source);
           
             // Compile the shader program
           
-            this.gl.compileShader(shader);
+            gl.compileShader(shader);
           
             // See if it compiled successfully
           
-            if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-              alert('An error occurred compiling the shaders: ' + this.gl.getShaderInfoLog(shader));
-              this.gl.deleteShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+              alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+              gl.deleteShader(shader);
               return null;
             }
           
@@ -304,46 +312,46 @@
     }
 
     class Buffers{
-        constructor(gl){
-            this.gl = gl;
+        constructor(){
+            
         }
 
         initTexture(url) {
-            const texture = this.gl.createTexture();
-            this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
           
             // Because video havs to be download over the internet
             // they might take a moment until it's ready so
             // put a single pixel in the texture so we can
             // use it immediately.
             const level = 0;
-            const internalFormat = this.gl.RGBA;
+            const internalFormat = gl.RGBA;
             const width = 1;
             const height = 1;
             const border = 0;
-            const srcFormat = this.gl.RGBA;
-            const srcType = this.gl.UNSIGNED_BYTE;
+            const srcFormat = gl.RGBA;
+            const srcType = gl.UNSIGNED_BYTE;
             const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
-            this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat,
+            gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
                           width, height, border, srcFormat, srcType,
                           pixel);
           
             // Turn off mips and set  wrapping to clamp to edge so it
             // will work regardless of the dimensions of the video.
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
           
             return texture;
           }
 
           updateTexture(texture, video) {
             const level = 0;
-            const internalFormat = this.gl.RGBA;
-            const srcFormat = this.gl.RGBA;
-            const srcType = this.gl.UNSIGNED_BYTE;
-            this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-            this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat,
+            const internalFormat = gl.RGBA;
+            const srcFormat = gl.RGBA;
+            const srcType = gl.UNSIGNED_BYTE;
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
                           srcFormat, srcType, video);
           }
           
@@ -354,7 +362,7 @@
             
         }
 
-        initBuffers(gl) {
+        initBuffers() {
 
             // Create a buffer for the cube's vertex positions.
           
@@ -532,14 +540,14 @@
     }
 
     var window = new Window();
-    var shaders = new Shaders(window.gl);
+    var shaders = new Shaders();
 
     var programInfo = shaders.loadShaders();
 
     var buffers = new Buffers$1();
-    var actualBuffers = buffers.initBuffers(window.gl);
+    var actualBuffers = buffers.initBuffers();
 
-    var texture = new Buffers(window.gl);
+    var texture = new Buffers();
 
     var actualTexture = texture.initTexture("cubetexture.png");
 

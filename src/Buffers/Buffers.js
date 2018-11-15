@@ -1,9 +1,11 @@
+import gl from "./../gl";
+
 export default class Buffers{
     constructor(){
         
     }
 
-    initBuffers(gl) {
+    initBuffers() {
 
         // Create a buffer for the cube's vertex positions.
       
