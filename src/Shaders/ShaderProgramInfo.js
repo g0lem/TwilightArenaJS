@@ -1,4 +1,4 @@
-import ShaderProgram from "./ShaderProgram";
+import ShaderProgram from "./structures/ShaderProgram";
 import gl from "./../gl";
 
 export default class ShaderProgramInfo{

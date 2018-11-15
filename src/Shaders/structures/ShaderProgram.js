@@ -1,5 +1,5 @@
 import Shader from "./Shader";
-import gl from "./../gl";
+import gl from "../../gl";
 
 export default (vsSource, fsSource) => {
     const vertexShader = Shader(gl.VERTEX_SHADER, vsSource);
