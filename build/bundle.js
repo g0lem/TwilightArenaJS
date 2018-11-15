@@ -228,7 +228,7 @@
 
     class Shaders{
 
-        constructor(gl$$1){
+        constructor(){
             this.shaders = {
                 vertexShader,
                 fragmentShader,
@@ -238,7 +238,7 @@
         loadShaders(){
             // Initialize a shader program; this is where all the lighting
             // for the vertices and so forth is established.
-            const shaderProgram = this.initShaderProgram(gl, this.shaders.vertexShader, this.shaders.fragmentShader);
+            const shaderProgram = this.initShaderProgram(this.shaders.vertexShader, this.shaders.fragmentShader);
 
             // Collect all the info needed to use the shader program.
             // Look up which attributes our shader program is using
@@ -262,21 +262,21 @@
             return programInfo;
         }
 
-        initShaderProgram(gl$$1, vsSource, fsSource) {
-            const vertexShader$$1 = this.loadShader(gl$$1.VERTEX_SHADER, vsSource);
-            const fragmentShader$$1 = this.loadShader(gl$$1.FRAGMENT_SHADER, fsSource);
+        initShaderProgram(vsSource, fsSource) {
+            const vertexShader$$1 = this.loadShader(gl.VERTEX_SHADER, vsSource);
+            const fragmentShader$$1 = this.loadShader(gl.FRAGMENT_SHADER, fsSource);
           
             // Create the shader program
           
-            const shaderProgram = gl$$1.createProgram();
-            gl$$1.attachShader(shaderProgram, vertexShader$$1);
-            gl$$1.attachShader(shaderProgram, fragmentShader$$1);
-            gl$$1.linkProgram(shaderProgram);
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader$$1);
+            gl.attachShader(shaderProgram, fragmentShader$$1);
+            gl.linkProgram(shaderProgram);
           
             // If creating the shader program failed, alert
           
-            if (!gl$$1.getProgramParameter(shaderProgram, gl$$1.LINK_STATUS)) {
-              alert('Unable to initialize the shader program: ' + gl$$1.getProgramInfoLog(shaderProgram));
+            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+              alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
               return null;
             }
           

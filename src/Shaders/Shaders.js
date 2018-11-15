@@ -4,7 +4,7 @@ import gl from "./../gl";
 
 export default class Shaders{
 
-    constructor(gl){
+    constructor(){
         this.shaders = {
             vertexShader,
             fragmentShader,
@@ -14,7 +14,7 @@ export default class Shaders{
     loadShaders(){
         // Initialize a shader program; this is where all the lighting
         // for the vertices and so forth is established.
-        const shaderProgram = this.initShaderProgram(gl, this.shaders.vertexShader, this.shaders.fragmentShader);
+        const shaderProgram = this.initShaderProgram(this.shaders.vertexShader, this.shaders.fragmentShader);
 
         // Collect all the info needed to use the shader program.
         // Look up which attributes our shader program is using
@@ -38,7 +38,7 @@ export default class Shaders{
         return programInfo;
     }
 
-    initShaderProgram(gl, vsSource, fsSource) {
+    initShaderProgram(vsSource, fsSource) {
         const vertexShader = this.loadShader(gl.VERTEX_SHADER, vsSource);
         const fragmentShader = this.loadShader(gl.FRAGMENT_SHADER, fsSource);
       
