@@ -6,8 +6,7 @@ import Buffers from "./Buffers/Buffers";
 
 var window = new Window();
 var shaders = new Shaders();
-
-var programInfo = shaders.loadShaders();
+var programInfo = shaders.getShaderProgramInfo();
 
 var buffers = new Buffers();
 var actualBuffers = buffers.initBuffers();
